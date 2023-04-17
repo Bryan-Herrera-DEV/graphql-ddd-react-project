@@ -1,31 +1,18 @@
 import "reflect-metadata";
-import { ApolloServer } from "apollo-server-express";
-import Express from "express";
-import { buildSchema } from "type-graphql";
-import { UserResolver } from "./infrastructure/graphql/resolvers/UserResolver";
-// Using environment variables
-import dotenv from "dotenv";
-dotenv.config();
+import { connectionDB } from "./main/config/sqliteConfig";
+import Logger from "./main/provider/Logger";
+import app from "./main/config/app";
 
-async function main() {
-  const schema = await buildSchema({
-    resolvers: await [UserResolver],
-    validate: false,
+connectionDB
+  .initialize()
+  .then(() => {
+    Logger.info("Connected to the database!");
+
+    app.listen(4000, () => {
+      Logger.info("Server started on port 4000!");
+    });
+  })
+  .catch((err) => {
+    Logger.error("Error connecting to the database: " + err);
+    process.exit();
   });
-
-  const app = Express();
-
-  const server = new ApolloServer({
-    schema,
-    context: ({ req, res }) => ({ req, res }),
-  });
-  await server.start();
-  server.applyMiddleware({ app });
-
-
-  app.listen(4000, () => {
-    console.log("Server started on http://localhost:4000/graphql");
-  });
-}
-
-main();
