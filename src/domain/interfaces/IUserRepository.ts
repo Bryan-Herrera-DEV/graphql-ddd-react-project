@@ -1,7 +1,7 @@
 import { User } from "../models/contracts";
 
 export interface IUserRepository {
-  findById(id: number): Promise<User>;
+  findById(id: number | null): Promise<User>;
   findByEmail(email: string): Promise<User>;
-  save(user: User): Promise<User>;
+  saveUser(user: User): Promise<User>;
 }
