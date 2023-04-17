@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  todolist-api:
+    build: .
+    ports:
+      - "4000:4000"
+    container_name: todolist-api
+    command: npm start

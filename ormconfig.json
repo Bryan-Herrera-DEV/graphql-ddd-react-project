@@ -1,0 +1,14 @@
+{
+  "type": "sqlite",
+  "database": "db/todolist.sqlite",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/infrastructure/database/entities/**/*.ts"],
+  "migrations": ["src/migration/**/*.ts"],
+  "subscribers": ["src/subscriber/**/*.ts"],
+  "cli": {
+    "entitiesDir": "src/infrastructure/database/entities",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}
