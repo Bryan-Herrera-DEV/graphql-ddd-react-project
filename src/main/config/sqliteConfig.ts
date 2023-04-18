@@ -12,3 +12,7 @@ export const connectionDB: DataSource = new DataSource({
   },
 });
 
+export const openConnection = async (): Promise<void> => {
+  await connectionDB.connect();
+};
+

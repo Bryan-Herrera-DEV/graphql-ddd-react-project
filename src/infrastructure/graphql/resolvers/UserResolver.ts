@@ -1,13 +1,19 @@
 import { UserRepository } from "./../../../infrastructure/database/repositories/UserRepository";
-import { Resolver, Mutation, Arg, Query } from "type-graphql";
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  Query,
+  UseMiddleware,
+  Ctx,
+} from "type-graphql";
 import { BcryptProvider } from "./../../../main/provider/HashProvider";
-import { LoggedUser, User } from "../../../domain/models/contracts";
+import { User } from "../../../domain/models/contracts";
 import { generateToken } from "./../../../infrastructure/auth/auth";
 import { UserType } from "../types/UserType";
 import { getCustomRepository } from "typeorm";
 import Logger from "./../../../main/provider/Logger";
-import { IJsonResponse } from "./../../../main/provider/IJsonResponse";
-import { JsonResponse } from "./../../../main/provider/JsonResponse";
+import { isAuthenticated } from "./../middleware/isAuthenticated";
 @Resolver(UserType)
 export class UserResolver {
   private userRepository: UserRepository;
@@ -22,7 +28,7 @@ export class UserResolver {
   async register(
     @Arg("email") email: string,
     @Arg("password") password: string
-  ): Promise<IJsonResponse<Omit<LoggedUser, "password">>> {
+  ): Promise<string> {
     await this.userRepository.findByEmail(email).then((user) => {
       if (user.id !== undefined) {
         Logger.error("User already exists.");
@@ -39,17 +45,34 @@ export class UserResolver {
 
     const nUser = await this.userRepository.saveUser(user);
 
-    const jsonRes: IJsonResponse<Omit<LoggedUser, "password">> =
-      new JsonResponse(201, "User created.", {
-        token: generateToken(`${nUser.id}`),
-        email: nUser.email,
-        id: nUser.id,
-      } as Omit<LoggedUser, "password">);
-    return jsonRes;
+    return `User ${nUser.email} created.`;
+  }
+
+  @Mutation(() => String)
+  async login(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<string> {
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw new Error("El usuario no existe");
+    }
+
+    const valid = await this.hashProvider.compare(password, user.password);
+    if (!valid) {
+      throw new Error("Contraseña incorrecta");
+    }
+
+    const token = generateToken(`${user.id}`);
+
+    return token;
   }
 
   @Query(() => UserType)
-  async getUser(@Arg("id") id: number): Promise<User> {
+  @UseMiddleware(isAuthenticated)
+  async getUser(
+    @Arg("id") id: number,
+  ): Promise<User> {
     const user = await this.userRepository.findById(id);
 
     if (!user) {

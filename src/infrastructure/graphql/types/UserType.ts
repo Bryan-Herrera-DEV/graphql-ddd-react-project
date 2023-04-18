@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from "type-graphql";
+import { ToDoListType } from "./ToDoListType";
 
 @ObjectType()
 export class UserType {
@@ -10,4 +11,7 @@ export class UserType {
 
   @Field(() => String)
   password: string | undefined;
+
+  @Field(() => [ToDoListType])
+  todoLists: ToDoListType[] | undefined;
 }

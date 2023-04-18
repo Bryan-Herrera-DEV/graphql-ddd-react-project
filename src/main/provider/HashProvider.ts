@@ -8,7 +8,10 @@ export class BcryptProvider implements IHashProvider {
     return await bcrypt.hash(password, this.saltRounds);
   }
 
-  async compare(password: string, hash: string): Promise<boolean> {
+  async compare(password: string, hash: string | undefined): Promise<boolean> {
+    if (!hash) {
+      return false;
+    }
     return await bcrypt.compare(password, hash);
   }
 }
