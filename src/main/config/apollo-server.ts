@@ -6,7 +6,7 @@ import { buildSchema } from "type-graphql";
 export const setupApolloServer = async (app: Express): Promise<void> => {
   const schema = await buildSchema({
     resolvers: await [UserResolver],
-    validate: false,
+    validate: true,
   });
   const server = new ApolloServer({
     schema,

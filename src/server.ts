@@ -2,10 +2,12 @@ import "reflect-metadata";
 import { connectionDB } from "./main/config/sqliteConfig";
 import Logger from "./main/provider/Logger";
 import app from "./main/config/app";
+import { createConnection } from "typeorm";
 
 connectionDB
-  .initialize()
-  .then(() => {
+.initialize()
+.then(async () => {
+    await createConnection();
     Logger.info("Connected to the database!");
 
     app.listen(4000, () => {

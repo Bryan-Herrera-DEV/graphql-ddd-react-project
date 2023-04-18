@@ -12,10 +12,10 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number | undefined;
 
-  @Column({ unique: true })
+  @Column({ type: "varchar" })
   email: string | undefined;
 
-  @Column()
+  @Column({ type: "varchar" })
   password: string | undefined;
 
   @OneToMany(() => ToDoListEntity, (todoList) => todoList.user)

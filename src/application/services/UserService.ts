@@ -13,6 +13,6 @@ export class UserService {
   }
 
   async save(user: User): Promise<User> {
-    return await this.userRepository.save(user);
+    return await this.userRepository.saveUser(user);
   }
 }
