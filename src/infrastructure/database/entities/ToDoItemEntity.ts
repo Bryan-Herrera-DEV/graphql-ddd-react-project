@@ -23,4 +23,10 @@ export class ToDoItemEntity extends BaseEntity {
 
   @ManyToOne(() => ToDoListEntity, (todoList) => todoList.todoItems)
   todoList: ToDoListEntity | undefined;
+
+  @Column({ type: "boolean", default: false })
+  isFavorite: boolean | undefined;
+
+  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  createdAt: Date | undefined;
 }

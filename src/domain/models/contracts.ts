@@ -18,8 +18,6 @@ export class ToDoItem {
   content: string | undefined;
   completed: boolean | undefined;
   todoList: ToDoList | undefined;
-}
-
-export interface LoggedUser extends User {
-  token: string;
+  createdAt: Date | undefined;
+  isFavorite: boolean | undefined;
 }
