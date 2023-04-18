@@ -1,6 +1,10 @@
 import { ObjectType, Field, ID } from "type-graphql";
 import { UserType } from "./UserType";
-
+/*
+ title: string | undefined;
+  content: string | undefined;
+  completed: boolean | undefined;
+*/
 @ObjectType()
 export class ToDoListType {
   @Field(() => ID)

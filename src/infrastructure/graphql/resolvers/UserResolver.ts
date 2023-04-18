@@ -5,7 +5,6 @@ import {
   Arg,
   Query,
   UseMiddleware,
-  Ctx,
 } from "type-graphql";
 import { BcryptProvider } from "./../../../main/provider/HashProvider";
 import { User } from "../../../domain/models/contracts";
@@ -14,13 +13,17 @@ import { UserType } from "../types/UserType";
 import { getCustomRepository } from "typeorm";
 import Logger from "./../../../main/provider/Logger";
 import { isAuthenticated } from "./../middleware/isAuthenticated";
+import { ToDoListRepository } from "./../../../infrastructure/database/repositories/ToDoListRepository";
+import { ToDoListType } from "./../types/ToDoListType";
 @Resolver(UserType)
 export class UserResolver {
   private userRepository: UserRepository;
+  private todoListRepository: ToDoListRepository;
   private hashProvider: BcryptProvider;
 
   constructor() {
     this.userRepository = getCustomRepository(UserRepository);
+    this.todoListRepository = getCustomRepository(ToDoListRepository);
     this.hashProvider = new BcryptProvider();
   }
 
@@ -81,4 +84,21 @@ export class UserResolver {
 
     return user;
   }
+
+  @Query(() => [ToDoListType])
+  @UseMiddleware(isAuthenticated)
+  async getToDoLists(
+    @Arg("userId") userId: number,
+  ): Promise<ToDoListType[]> {
+    const user = await this.userRepository.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    const todoLists = await this.todoListRepository.findAllByUser(userId);
+
+    return todoLists;
+  }
+
 }

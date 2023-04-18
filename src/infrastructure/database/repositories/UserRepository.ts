@@ -1,6 +1,6 @@
 import { Connection, EntityRepository, Repository } from "typeorm";
 import { UserEntity } from "../entities/UserEntity";
-import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
+import { IUserRepository } from "./../../../domain/interfaces/IUserRepository";
 import { User, ToDoList } from "./../../../domain/models/contracts";
 
 @EntityRepository(UserEntity)

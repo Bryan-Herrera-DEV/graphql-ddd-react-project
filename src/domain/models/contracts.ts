@@ -14,6 +14,7 @@ export class ToDoList {
 
 export class ToDoItem {
   id: number | undefined;
+  title: string | undefined;
   content: string | undefined;
   completed: boolean | undefined;
   todoList: ToDoList | undefined;
