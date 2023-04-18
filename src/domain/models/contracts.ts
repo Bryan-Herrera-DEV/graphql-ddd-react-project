@@ -18,3 +18,7 @@ export class ToDoItem {
   completed: boolean | undefined;
   todoList: ToDoList | undefined;
 }
+
+export interface LoggedUser extends User {
+  token: string;
+}
