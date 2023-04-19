@@ -8,6 +8,7 @@ import { useAuthStore } from "../../../stores/auth.store";
 
 const Login = () => {
   const setToken = useAuthStore((state) => state.setToken);
+  const setUserId = useAuthStore((state) => state.setUserId);
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().required("Required").email("Invalid email"),
@@ -19,7 +20,7 @@ const Login = () => {
   };
 
   const [login] = useMutation<
-    { login: string },
+    { login: string[] },
     { email: string; password: string },
     { token: string }
   >(LOGIN);
@@ -41,10 +42,10 @@ const Login = () => {
             success: <b>Logged in</b>,
             error: <b>Error Login</b>,
           }
-        ).then((res: FetchResult<{ login: string; }>) => {
+        ).then((res: FetchResult<{ login: string[]; }>) => {
           if(res.data?.login) {
-            console.log(res.data?.login);
-            setToken(res.data.login);
+            setToken(res.data.login[0]);
+            setUserId(parseInt(res.data.login[1]));
           }
         });
       }}

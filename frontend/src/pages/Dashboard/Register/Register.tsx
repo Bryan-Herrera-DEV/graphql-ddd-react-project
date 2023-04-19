@@ -4,9 +4,12 @@ import { type IUser } from '../../../interfaces/utils.interface';
 import { REGISTER } from "../../../services/user.service";
 import { type FetchResult, useMutation } from "@apollo/client";
 import { toast } from "react-hot-toast";
+import { useNavigate } from 'react-router-dom';
+import { AUTH_LOGIN } from '../../../utils/paths';
 
 
 const Register = () => {
+  const navigate = useNavigate();
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().required("Required").email("Invalid email"),
     password: Yup.string().required("Required").min(6, "Too short"),
@@ -41,8 +44,12 @@ const Register = () => {
           }
         ).then((res: FetchResult<{ register: string; }>) => {
           if(res.data?.register) {
-            console.log(res.data?.register);
+            setTimeout(() => {
+              navigate(AUTH_LOGIN);
+              window.location.reload();
+            }, 200);
           }
+
         });
       }}
     >

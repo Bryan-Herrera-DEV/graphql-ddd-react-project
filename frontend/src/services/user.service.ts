@@ -11,3 +11,13 @@ export const REGISTER = gql`
     register(password: $password, email: $email)
   }
 `;
+
+export const GET_USER_DATA = gql`
+  query GetUser($getUserId: Float!) {
+    getUser(id: $getUserId) {
+      id
+      email
+      password
+    }
+  }
+`;

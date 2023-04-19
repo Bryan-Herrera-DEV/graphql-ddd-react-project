@@ -6,11 +6,13 @@ interface State {
   token: string;
   user: IUser | null;
   isAuth: boolean;
+  userId: number | null;
 }
 
 interface Actions {
   setToken: (token: string) => void;
   setUser: (user: IUser) => void;
+  setUserId: (userId: number) => void;
 }
 
 export const useAuthStore = create(
@@ -19,12 +21,16 @@ export const useAuthStore = create(
       token: "",
       user: null,
       isAuth: false,
+      userId: null,
       setToken: (token: string) => {
         set(() => ({ token, isAuth: !!token }));
       },
       setUser: (user: IUser) => {
         set(() => ({ user }));
       },
+      setUserId: (userId: number) => {
+        set(() => ({ userId }));
+      }
     }),
     {
       name: "auth",
