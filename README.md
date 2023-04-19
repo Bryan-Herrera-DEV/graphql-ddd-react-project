@@ -48,3 +48,17 @@ npm run dev
 ```
 Abra un navegador web y vaya a la dirección http://localhost:3000 para ver la aplicación.
 
+
+## Docker
+El proyecto incluye archivos de configuración de Docker para ejecutar la aplicación y la base de datos en contenedores. Para utilizar Docker:
+
+Instala Docker y Docker Compose.
+Ejecuta:
+```sh
+docker-compose build
+docker-compose up
+```
+
+El servidor de Node.js estará disponible en la dirección http://localhost:4000 y el front-end en http://localhost:3000.
+La API estará disponible en la ruta /graphql del servidor expuesto por Docker.
+

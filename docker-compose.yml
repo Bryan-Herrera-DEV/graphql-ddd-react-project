@@ -1,9 +1,18 @@
 version: "3.9"
 
 services:
-  todolist-api:
-    build: .
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  backend:
+    build: ./backend
     ports:
       - "4000:4000"
-    container_name: todolist-api
-    command: npm start
+    volumes:
+      - ./backend:/app
+      - /app/node_modules

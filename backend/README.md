@@ -58,10 +58,3 @@ El proyecto sigue la arquitectura hexagonal y se organiza en las siguientes carp
 
 ## Uso
 La API GraphQL está disponible en la ruta /graphql del servidor. Puedes utilizar una herramienta como GraphQL Playground o Postman para enviar consultas y mutaciones a la API.
-
-## Docker
-El proyecto incluye archivos de configuración de Docker para ejecutar la aplicación y la base de datos en contenedores. Para utilizar Docker:
-
-Instala Docker y Docker Compose.
-Ejecuta docker-compose up -d para iniciar los contenedores.
-La API estará disponible en la ruta /graphql del servidor expuesto por Docker.
