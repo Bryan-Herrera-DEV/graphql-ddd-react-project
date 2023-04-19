@@ -1,6 +1,10 @@
 import * as Yup from 'yup';
 import { Form, Formik, Field } from 'formik';
 import { type IUser } from '../../../interfaces/utils.interface';
+import { REGISTER } from "../../../services/user.service";
+import { type FetchResult, useMutation } from "@apollo/client";
+import { toast } from "react-hot-toast";
+
 
 const Register = () => {
   const ValidationSchema = Yup.object().shape({
@@ -12,12 +16,34 @@ const Register = () => {
     email: "",
     password: "",
   }
+
+  const [register] = useMutation<
+    { register: string },
+    { email: string; password: string },
+    { token: string }
+  >(REGISTER);
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ValidationSchema}
       onSubmit={async (values) => {
-        console.log('a');
+        void toast.promise(
+          register({
+            variables: {
+              email: values.email!,
+              password: values.password!,
+            },
+          }),
+          {
+            loading: "Saving...",
+            success: <b>Registered</b>,
+            error: <b>Error In Register</b>,
+          }
+        ).then((res: FetchResult<{ register: string; }>) => {
+          if(res.data?.register) {
+            console.log(res.data?.register);
+          }
+        });
       }}
     >
       {({ errors, touched }) => {

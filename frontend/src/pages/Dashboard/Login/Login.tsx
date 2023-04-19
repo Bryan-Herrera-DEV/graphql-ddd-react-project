@@ -2,14 +2,13 @@ import * as Yup from "yup";
 import { Form, Formik, Field } from "formik";
 import { type IUser } from "../../../interfaces/utils.interface";
 import { toast } from "react-hot-toast";
-import { gql, useMutation  } from "@apollo/client";
-/*
-mutation Login($password: String!, $email: String! ) {
-  login(password: $password, email: $email)
-}
-*/
+import { type FetchResult, useMutation } from "@apollo/client";
+import { LOGIN } from "../../../services/user.service";
+import { useAuthStore } from "../../../stores/auth.store";
 
 const Login = () => {
+  const setToken = useAuthStore((state) => state.setToken);
+
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().required("Required").email("Invalid email"),
     password: Yup.string().required("Required").min(6, "Too short"),
@@ -19,25 +18,35 @@ const Login = () => {
     password: "",
   };
 
-  const LOGIN = gql`
-    mutation Login($password: String!, $email: String!) {
-      login(password: $password, email: $email)
-    }
-  `;
-  const [login, { data, loading, error }] = useMutation(LOGIN);
-  
+  const [login] = useMutation<
+    { login: string },
+    { email: string; password: string },
+    { token: string }
+  >(LOGIN);
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ValidationSchema}
       onSubmit={async (values) => {
-        toast.success("Login successful");  
-        await login({
-          variables: {
-            email: values.email,
-            password: values.password,
+        void toast.promise(
+          login({
+            variables: {
+              email: values.email!,
+              password: values.password!,
+            },
+          }),
+          {
+            loading: "Saving...",
+            success: <b>Logged in</b>,
+            error: <b>Error Login</b>,
           }
-        })          
+        ).then((res: FetchResult<{ login: string; }>) => {
+          if(res.data?.login) {
+            console.log(res.data?.login);
+            setToken(res.data.login);
+          }
+        });
       }}
     >
       {({ errors, touched }) => {
