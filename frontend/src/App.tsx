@@ -14,7 +14,7 @@ import Home from "./pages/Dashboard/Home/Home";
 
 function App() {
   return (
-    <>
+    <div className="bg-base-300 w-full h-full">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to={AUTH_BASE} />} />
@@ -27,7 +27,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

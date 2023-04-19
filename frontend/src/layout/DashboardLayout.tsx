@@ -46,16 +46,16 @@ const DashboardLayout = () => {
   };
   return (
     <>
-      <div className="navbar bg-base-100">
+      <div className="navbar bg-base-200">
         <div className="flex-1">
           <a className="btn-ghost btn text-xl normal-case">ToDoList - MTC</a>
         </div>
         <div className="flex-none gap-2">
           <div className="dropdown-end dropdown">
             <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
-              <div className="w-10 rounded-full border-2 border-red-100">
+              <div className="w-11 h-11 rounded-full border-2 border-red-100 pulse">
                 <img
-                  src={`https://www.gravatar.com/avatar/${hash}?d=retro&f=y&s=200`}
+                  src={`https://www.gravatar.com/avatar/${hash}?d=retro&s=400`}
                 />
               </div>
             </label>
@@ -82,8 +82,8 @@ const DashboardLayout = () => {
           </div>
         </div>
       </div>
-      <div className="navbar">
-        <div className="pl-[1rem] pr-[1rem]">
+      <div className="navbar w-full">
+        <div className="pl-[1rem] pr-[1rem] w-full">
           <Outlet />
         </div>
       </div>
