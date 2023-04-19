@@ -51,11 +51,11 @@ export class UserResolver {
     return `User ${nUser.email} created.`;
   }
 
-  @Mutation(() => String)
+  @Mutation(() => [String])
   async login(
     @Arg("email") email: string,
     @Arg("password") password: string
-  ): Promise<string> {
+  ): Promise<string[]> {
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       throw new Error("El usuario no existe");
@@ -68,7 +68,7 @@ export class UserResolver {
 
     const token = generateToken(`${user.id}`);
 
-    return token;
+    return [token, `${user.id}`];
   }
 
   @Query(() => UserType)

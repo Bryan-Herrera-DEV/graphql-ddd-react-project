@@ -2,6 +2,7 @@
 import { verifyToken } from "./../../auth/auth";
 import { UserRepository } from "./../../../infrastructure/database/repositories/UserRepository";
 import { connectionDB } from "./../../../main/config/sqliteConfig";
+import { NextFn } from "type-graphql";
 
 export const isAuthenticated = async (
   {
@@ -9,7 +10,7 @@ export const isAuthenticated = async (
   }: {
     context: { req: { headers: { authorization: string } } };
   },
-  next: any
+  next: NextFn
 ) => {
     const token = context.req.headers.authorization;
     if (!token) {
