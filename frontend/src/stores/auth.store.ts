@@ -11,8 +11,8 @@ interface State {
 
 interface Actions {
   setToken: (token: string) => void;
-  setUser: (user: IUser) => void;
-  setUserId: (userId: number) => void;
+  setUser: (user: IUser | null) => void;
+  setUserId: (userId: number | null) => void;
 }
 
 export const useAuthStore = create(
@@ -25,10 +25,10 @@ export const useAuthStore = create(
       setToken: (token: string) => {
         set(() => ({ token, isAuth: !!token }));
       },
-      setUser: (user: IUser) => {
+      setUser: (user: IUser | null) => {
         set(() => ({ user }));
       },
-      setUserId: (userId: number) => {
+      setUserId: (userId: number | null) => {
         set(() => ({ userId }));
       }
     }),

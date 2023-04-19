@@ -4,11 +4,13 @@ import {
   AUTH_LOGIN,
   AUTH_REGISTER,
   DASHBOARD_BASE,
+  DASHBOARD_HOME,
 } from "./utils/paths";
 import { AuthLayout } from "./layout/AuthLayout";
-import Register from "./pages/Dashboard/Register/Register";
-import Login from "./pages/Dashboard/Login/Login";
+import Register from "./pages/Auth/Register/Register";
+import Login from "./pages/Auth/Login/Login";
 import DashboardLayout from "./layout/DashboardLayout";
+import Home from "./pages/Dashboard/Home/Home";
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
             <Route path={AUTH_REGISTER} element={<Register />} />
             <Route path={AUTH_LOGIN} element={<Login />} />
           </Route>
-          <Route path={DASHBOARD_BASE} element={<DashboardLayout />}></Route>
+          <Route path={DASHBOARD_BASE} element={<DashboardLayout />}>
+            <Route path={DASHBOARD_HOME} element={<Home />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

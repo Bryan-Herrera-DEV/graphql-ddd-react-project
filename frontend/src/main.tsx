@@ -13,11 +13,11 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, {headers}) => {
   // auth: state.token is the token saved in local storage
-  const token = JSON.parse(localStorage.getItem('token') || 'null').state.token;
+  const token = JSON.parse(localStorage.getItem('auth') || 'null').state.token;
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      Authorization: token ? `${token}` : '',
     },
   };
 });
